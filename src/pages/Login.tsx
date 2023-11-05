@@ -1,22 +1,25 @@
-import { FC, useEffect } from 'react'
-import { Space, Typography, Form, Button, Input, Checkbox } from 'antd'
-import { Link } from 'react-router-dom'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { FC, useEffect } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import { Typography, Space, Form, Input, Button, Checkbox, message } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons'
+import { useRequest } from 'ahooks'
+import { REGISTER_PATHNAME, MANAGE_INDEX_PATHNAME } from '../router'
+import { loginService } from '../services/user'
+import { setToken } from '../utils/user-token'
 import styles from './Login.module.scss'
-import { REGISTER_PATHNAME } from '../router'
 
 const { Title } = Typography
 
-const USERNAME_KEY = 'username'
-const PASSWORD_KEY = 'password'
+const USERNAME_KEY = 'USERNAME'
+const PASSWORD_KEY = 'PASSWORD'
 
-// 记忆化存储的一系列方法
 function rememberUser(username: string, password: string) {
   localStorage.setItem(USERNAME_KEY, username)
   localStorage.setItem(PASSWORD_KEY, password)
 }
 
-function deleteUserInfoFromStorage() {
+function deleteUserFromStorage() {
   localStorage.removeItem(USERNAME_KEY)
   localStorage.removeItem(PASSWORD_KEY)
 }
@@ -28,54 +31,69 @@ function getUserInfoFromStorage() {
   }
 }
 
-interface IForm {
-  username: string
-  password: string
-  remember: boolean
-}
-
 const Login: FC = () => {
-  const [form] = Form.useForm()
-  // 设置值到form组件中
+  const nav = useNavigate()
+
+  const [form] = Form.useForm() // 第三方 hook
+
   useEffect(() => {
     const { username, password } = getUserInfoFromStorage()
     form.setFieldsValue({ username, password })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  // 提交注册时触发的回调
-  function onFinish(value: IForm) {
-    console.log(value)
-    const { username, password, remember } = value
+  }, [form])
+
+  const { run } = useRequest(
+    async (username: string, password: string) => {
+      const data = await loginService(username, password)
+      return data
+    },
+    {
+      manual: true,
+      onSuccess(result) {
+        const { token = '' } = result
+        setToken(token) // 存储 token
+
+        message.success('登录成功')
+        nav(MANAGE_INDEX_PATHNAME) // 导航到“我的问卷”
+      },
+    }
+  )
+
+  const onFinish = (values: any) => {
+    const { username, password, remember } = values || {}
+
+    run(username, password) // 执行 ajax
+
     if (remember) {
       rememberUser(username, password)
     } else {
-      deleteUserInfoFromStorage()
+      deleteUserFromStorage()
     }
   }
+
   return (
     <div className={styles.container}>
       <div>
         <Space>
-          <Title>
+          <Title level={2}>
             <UserAddOutlined />
           </Title>
-          <Title>登录</Title>
+          <Title level={2}>用户登录</Title>
         </Space>
       </div>
       <div>
         <Form
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 16 }}
-          onFinish={onFinish}
           initialValues={{ remember: true }}
+          onFinish={onFinish}
           form={form}
         >
           <Form.Item
             label="用户名"
-            name={'username'}
+            name="username"
             rules={[
-              { required: true, message: '请输入密码' },
-              { type: 'string', min: 5, max: 20, message: '字符长度在5-20之间' },
+              { required: true, message: '请输入用户名' },
+              { type: 'string', min: 5, max: 20, message: '字符长度在 5-20 之间' },
               { pattern: /^\w+$/, message: '只能是字母数字下划线' },
             ]}
           >
@@ -83,18 +101,18 @@ const Login: FC = () => {
           </Form.Item>
           <Form.Item
             label="密码"
-            name={'password'}
+            name="password"
             rules={[{ required: true, message: '请输入密码' }]}
           >
             <Input.Password />
           </Form.Item>
-          <Form.Item wrapperCol={{ offset: 6, span: 16 }} name={'remember'} valuePropName="checked">
+          <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 6, span: 16 }}>
             <Checkbox>记住我</Checkbox>
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
             <Space>
               <Button type="primary" htmlType="submit">
-                注册
+                登录
               </Button>
               <Link to={REGISTER_PATHNAME}>注册新用户</Link>
             </Space>
@@ -104,4 +122,5 @@ const Login: FC = () => {
     </div>
   )
 }
+
 export default Login
