@@ -1,11 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from './counterSlice'
-import userReducer from './userSlice'
+import counterReducer from './counterReducer'
+import userReducer, { UserState } from './userReducer'
+import componentsReducer, { ComponentStateType } from './componentsReducer'
+
+export type StateType = {
+  user: UserState
+  components: ComponentStateType
+}
 
 const store = configureStore({
   reducer: {
     counter: counterReducer,
     user: userReducer,
+    components: componentsReducer,
   },
 })
 export default store

@@ -8,7 +8,7 @@ import { LOGIN_PATHNAME } from '../router'
 // import { getUserInfoService } from '../services/user'
 import { removeToken } from '../utils/user-token'
 import useGetUserInfo from '../hooks/useGetUserInfo'
-import { logoutAction } from '../store/userSlice'
+import { logoutAction } from '../store/userReducer'
 
 const UserInfo: FC = () => {
   const nav = useNavigate()
