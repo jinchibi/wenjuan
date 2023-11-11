@@ -32,6 +32,7 @@ function useLoadQuestionData() {
       resetComponentAction({
         componentList,
         selectedId,
+        copiedComponent: null,
       })
     )
   }, [data, dispatch])

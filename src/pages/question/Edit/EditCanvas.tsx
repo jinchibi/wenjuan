@@ -38,21 +38,25 @@ const EditCanvas: FC<PropsType> = ({ loading }) => {
   return (
     <div className={styles.canvas}>
       {/* 不得不说，这封装的有点帅 */}
-      {componentList.map(c => {
-        const { fe_id } = c
-        // 拼接class name
-        const wrapperDefaultClassName = styles['component-wrapper']
-        const selectedClassName = styles.selected
-        const wrapperClassName = classNames({
-          [wrapperDefaultClassName]: true,
-          [selectedClassName]: fe_id === selectedId,
-        })
-        return (
-          <div key={fe_id} className={wrapperClassName} onClick={e => handleClick(e, fe_id)}>
-            <div className={styles.component}>{getComponent(c)}</div>
-          </div>
-        )
-      })}
+      {componentList
+        .filter(c => !c.isHidden)
+        .map(c => {
+          const { fe_id, isLocked } = c
+          // 拼接class name
+          const wrapperDefaultClassName = styles['component-wrapper']
+          const selectedClassName = styles.selected
+          const lockedClassName = styles.locked
+          const wrapperClassName = classNames({
+            [wrapperDefaultClassName]: true,
+            [selectedClassName]: fe_id === selectedId,
+            [lockedClassName]: isLocked,
+          })
+          return (
+            <div key={fe_id} className={wrapperClassName} onClick={e => handleClick(e, fe_id)}>
+              <div className={styles.component}>{getComponent(c)}</div>
+            </div>
+          )
+        })}
     </div>
   )
 }
