@@ -23,7 +23,12 @@ function genComponent(c: ComponentConfType) {
     )
   }
   return (
-    <div className={styles.wrapper} onClick={handleClick} key={type}>
+    <div
+      className={styles.wrapper}
+      onClick={handleClick}
+      key={type}
+      style={{ backgroundColor: '#F7F7F7' }}
+    >
       <div className={styles.component}>
         <Component />
       </div>

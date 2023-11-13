@@ -35,7 +35,7 @@ const EditToolBar: FC = () => {
   }
   // 复制
   function copiedHandler() {
-    dispatch(copiedComponentAction({ fe_id: selectedId }))
+    dispatch(copiedComponentAction())
   }
   // 粘贴
   function pasteHandler() {

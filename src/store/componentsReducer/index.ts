@@ -116,12 +116,12 @@ export const componentSlice = createSlice({
     },
     // 复制组件
     copiedComponentAction: (
-      state: ComponentStateType,
-      action: PayloadAction<{ fe_id: string }>
+      state: ComponentStateType
+      // action: PayloadAction<{ fe_id: string }>
     ) => {
-      const { componentList } = state
-      const { fe_id } = action.payload
-      const curComponent = componentList.find(c => c.fe_id === fe_id)
+      const { componentList, selectedId } = state
+      // const { fe_id } = action.payload
+      const curComponent = componentList.find(c => c.fe_id === selectedId)
       if (curComponent) {
         state.copiedComponent = cloneDeep(curComponent)
       }
@@ -137,6 +137,21 @@ export const componentSlice = createSlice({
         insertNewComponent(state, state.copiedComponent)
       }
     },
+    // 向上移
+    uparrowSelectedAction: (state: ComponentStateType) => {
+      const { componentList, selectedId } = state
+      const index = componentList.findIndex(c => c.fe_id === selectedId)
+      const length = componentList.length
+      if (index < 0) return
+      state.selectedId = componentList[(index - 1 + length) % length].fe_id
+    },
+    // 向下移
+    downarrowSelectedAction: (state: ComponentStateType) => {
+      const { componentList, selectedId } = state
+      const index = componentList.findIndex(c => c.fe_id === selectedId)
+      if (index < 0) return
+      state.selectedId = componentList[(index + 1) % componentList.length].fe_id
+    },
   },
 })
 
@@ -150,5 +165,7 @@ export const {
   toggleComponentLockedAction,
   copiedComponentAction,
   pasteComponentAction,
+  downarrowSelectedAction,
+  uparrowSelectedAction,
 } = componentSlice.actions
 export default componentSlice.reducer

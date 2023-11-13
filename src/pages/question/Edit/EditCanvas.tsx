@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { getComponentConfByType } from '../../../components/QuestionComponents'
 import { ComponentInfoType, changeSelectedIdAction } from '../../../store/componentsReducer'
 import classNames from 'classnames'
+import useBindCanvasKeyPress from '../../../hooks/useBindCanvasKeyPress'
 
 type PropsType = {
   loading: boolean
@@ -21,6 +22,7 @@ function getComponent(component: ComponentInfoType) {
 }
 
 const EditCanvas: FC<PropsType> = ({ loading }) => {
+  useBindCanvasKeyPress()
   // 获取每个组件中信息
   const { componentList, selectedId } = useAppSelector(state => state.components)
   const dispatch = useAppDispatch()
