@@ -9,7 +9,7 @@ const QuestionParagraph: FC<QuestionParagraphPropsType> = (props: QuestionParagr
   // 实现换行
   const textList = text?.split('\n')
   return (
-    <Paragraph style={{ textAlign: isCenter ? 'center' : 'start', marginBottom: 0 }}>
+    <Paragraph style={{ textAlign: isCenter ? 'center' : 'start', margin: 0 }}>
       {textList?.map((t, index) => {
         return (
           <span key={index}>

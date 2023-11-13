@@ -8,7 +8,9 @@ const QuestionInput: FC<QuestionInputPropsType> = props => {
   const { title, placeholder } = { ...QuestionInputDefaultProps, ...props }
   return (
     <div>
-      <Paragraph strong>{title}</Paragraph>
+      <Paragraph strong style={{ margin: 0 }}>
+        {title}
+      </Paragraph>
       <div>
         <Input placeholder={placeholder} />
       </div>

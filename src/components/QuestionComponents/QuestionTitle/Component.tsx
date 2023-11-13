@@ -18,6 +18,7 @@ const QuestionTitle: FC<QuestionTitlePropsType> = props => {
       style={{
         textAlign: isCenter ? 'center' : 'start',
         marginBottom: 0,
+        marginTop: 0,
         fontSize: getFontSize(level),
       }}
     >

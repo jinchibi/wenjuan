@@ -9,11 +9,11 @@ const QuestionInfo: FC<QuestionInfoPropsType> = (props: QuestionInfoPropsType) =
   const descList = desc.split('\n')
   return (
     <div style={{ textAlign: 'center' }}>
-      <Title style={{ fontSize: '22px' }}>{title}</Title>
-      <Paragraph>
+      <Title style={{ fontSize: '22px', margin: 0 }}>{title}</Title>
+      <Paragraph style={{ margin: 0 }}>
         {descList.map((d, index) => {
           return (
-            <span>
+            <span key={index}>
               {index > 0 && <br />}
               {d}
             </span>
