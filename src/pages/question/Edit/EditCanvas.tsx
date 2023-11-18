@@ -3,9 +3,15 @@ import styles from './EditCanvas.module.scss'
 import { Spin } from 'antd'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { getComponentConfByType } from '../../../components/QuestionComponents'
-import { ComponentInfoType, changeSelectedIdAction } from '../../../store/componentsReducer'
+import {
+  ComponentInfoType,
+  changeSelectedIdAction,
+  moveComponentAction,
+} from '../../../store/componentsReducer'
 import classNames from 'classnames'
 import useBindCanvasKeyPress from '../../../hooks/useBindCanvasKeyPress'
+import SortableContainer from '../../../components/DragSortable/SortableContainer'
+import SortableItem from '../../../components/DragSortable/SortableItem'
 
 type PropsType = {
   loading: boolean
@@ -37,29 +43,37 @@ const EditCanvas: FC<PropsType> = ({ loading }) => {
       </div>
     )
   }
+  const componentListWithId = componentList.map(c => ({ ...c, id: c.fe_id }))
+  function handleDragEnd(oldIndex: number, newIndex: number) {
+    dispatch(moveComponentAction({ oldIndex, newIndex }))
+  }
   return (
-    <div className={styles.canvas}>
-      {/* 不得不说，这封装的有点帅 */}
-      {componentList
-        .filter(c => !c.isHidden)
-        .map(c => {
-          const { fe_id, isLocked } = c
-          // 拼接class name
-          const wrapperDefaultClassName = styles['component-wrapper']
-          const selectedClassName = styles.selected
-          const lockedClassName = styles.locked
-          const wrapperClassName = classNames({
-            [wrapperDefaultClassName]: true,
-            [selectedClassName]: fe_id === selectedId,
-            [lockedClassName]: isLocked,
-          })
-          return (
-            <div key={fe_id} className={wrapperClassName} onClick={e => handleClick(e, fe_id)}>
-              <div className={styles.component}>{getComponent(c)}</div>
-            </div>
-          )
-        })}
-    </div>
+    <SortableContainer items={componentListWithId} onDragEnd={handleDragEnd}>
+      <div className={styles.canvas}>
+        {/* 不得不说，这封装的有点帅 */}
+        {componentList
+          .filter(c => !c.isHidden)
+          .map(c => {
+            const { fe_id, isLocked } = c
+            // 拼接class name
+            const wrapperDefaultClassName = styles['component-wrapper']
+            const selectedClassName = styles.selected
+            const lockedClassName = styles.locked
+            const wrapperClassName = classNames({
+              [wrapperDefaultClassName]: true,
+              [selectedClassName]: fe_id === selectedId,
+              [lockedClassName]: isLocked,
+            })
+            return (
+              <SortableItem key={fe_id} id={fe_id}>
+                <div className={wrapperClassName} onClick={e => handleClick(e, fe_id)}>
+                  <div className={styles.component}>{getComponent(c)}</div>
+                </div>
+              </SortableItem>
+            )
+          })}
+      </div>
+    </SortableContainer>
   )
 }
 export default EditCanvas

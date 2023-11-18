@@ -13,6 +13,8 @@ function isActiveElemValid() {
   const activeElem = document.activeElement
   // 没有focus到input上
   if (activeElem === document.body) return true
+  // 适配dnd kit
+  if (activeElem?.matches('div[role="button"]')) return true
   console.log(activeElem)
   return false
 }

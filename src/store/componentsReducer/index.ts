@@ -3,6 +3,7 @@ import { ComponentPropsType } from '../../components/QuestionComponents'
 import { getNextSelectedId, insertNewComponent } from './utils'
 import cloneDeep from 'lodash.clonedeep'
 import { nanoid } from 'nanoid'
+import { arrayMove } from '@dnd-kit/sortable'
 
 // import { produce } from 'immer'
 
@@ -152,6 +153,28 @@ export const componentSlice = createSlice({
       if (index < 0) return
       state.selectedId = componentList[(index + 1) % componentList.length].fe_id
     },
+    // 改变标题
+    changeComponentTitleAction: (
+      state: ComponentStateType,
+      actions: PayloadAction<{ fe_id: string; title: string }>
+    ) => {
+      const { fe_id, title } = actions.payload
+      const newComponent = [...state.componentList]
+      const curComp = newComponent.find(c => c.fe_id === fe_id)
+      // console.log(title)
+      curComp!.title = title
+      state.componentList = newComponent
+    },
+    // 移动组件
+    moveComponentAction: (
+      state: ComponentStateType,
+      actions: PayloadAction<{ oldIndex: number; newIndex: number }>
+    ) => {
+      const { oldIndex, newIndex } = actions.payload
+      const { componentList } = state
+      const newComponentList = [...componentList]
+      state.componentList = arrayMove(newComponentList, oldIndex, newIndex)
+    },
   },
 })
 
@@ -167,5 +190,7 @@ export const {
   pasteComponentAction,
   downarrowSelectedAction,
   uparrowSelectedAction,
+  changeComponentTitleAction,
+  moveComponentAction,
 } = componentSlice.actions
 export default componentSlice.reducer

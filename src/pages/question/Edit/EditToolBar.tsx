@@ -6,6 +6,8 @@ import {
   LockOutlined,
   CopyOutlined,
   BlockOutlined,
+  UpOutlined,
+  DownOutlined,
 } from '@ant-design/icons'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import {
@@ -14,13 +16,15 @@ import {
   toggleComponentLockedAction,
   copiedComponentAction,
   pasteComponentAction,
+  moveComponentAction,
 } from '../../../store/componentsReducer'
 
 const EditToolBar: FC = () => {
   const dispatch = useAppDispatch()
-  const { selectedId, copiedComponent } = useAppSelector(state => state.components)
+  const { selectedId, copiedComponent, componentList } = useAppSelector(state => state.components)
   const { isLocked } =
     useAppSelector(state => state.components.componentList.find(c => c.fe_id === selectedId)) || {}
+  const selectedIndex = componentList.findIndex(c => c.fe_id === selectedId)
   // 删除选中组件
   function deleteHandler() {
     dispatch(deleteSelectedComponentAction())
@@ -40,6 +44,14 @@ const EditToolBar: FC = () => {
   // 粘贴
   function pasteHandler() {
     dispatch(pasteComponentAction())
+  }
+  // 上移
+  function upHandler() {
+    dispatch(moveComponentAction({ oldIndex: selectedIndex, newIndex: selectedIndex - 1 }))
+  }
+  // 下移
+  function downHandler() {
+    dispatch(moveComponentAction({ oldIndex: selectedIndex, newIndex: selectedIndex + 1 }))
   }
   return (
     <>
@@ -68,6 +80,22 @@ const EditToolBar: FC = () => {
             onClick={pasteHandler}
             disabled={copiedComponent == null}
           ></Button>
+        </Tooltip>
+        <Tooltip title="上移">
+          <Button
+            shape="circle"
+            icon={<UpOutlined />}
+            onClick={upHandler}
+            disabled={selectedIndex === 0}
+          />
+        </Tooltip>
+        <Tooltip title="下移">
+          <Button
+            shape="circle"
+            icon={<DownOutlined />}
+            onClick={downHandler}
+            disabled={selectedIndex === componentList.length - 1}
+          />
         </Tooltip>
       </Space>
     </>

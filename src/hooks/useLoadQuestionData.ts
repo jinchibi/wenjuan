@@ -4,6 +4,7 @@ import { getQuestionService } from '../services/question'
 import { useEffect } from 'react'
 import { useAppDispatch } from '../store/hooks'
 import { resetComponentAction } from '../store/componentsReducer'
+import { resetPageInfoAction } from '../store/pageInfoReducer'
 
 function useLoadQuestionData() {
   const { id = '' } = useParams()
@@ -22,7 +23,7 @@ function useLoadQuestionData() {
   const dispatch = useAppDispatch()
   useEffect(() => {
     if (!data) return
-    const { componentList = [] } = data
+    const { componentList = [], title, desc, js, css } = data
     // 默认选中第一个组件
     let selectedId = ''
     if (componentList.length > 0) {
@@ -35,6 +36,8 @@ function useLoadQuestionData() {
         copiedComponent: null,
       })
     )
+    // 获取pageSetting
+    dispatch(resetPageInfoAction({ title, desc, js, css }))
   }, [data, dispatch])
   // 根据id变化来加载数据
   useEffect(() => {

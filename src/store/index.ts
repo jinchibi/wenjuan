@@ -2,10 +2,12 @@ import { configureStore } from '@reduxjs/toolkit'
 import counterReducer from './counterReducer'
 import userReducer, { UserState } from './userReducer'
 import componentsReducer, { ComponentStateType } from './componentsReducer'
+import pageInfoReducer, { PageInfoType } from './pageInfoReducer'
 
 export type StateType = {
   user: UserState
   components: ComponentStateType
+  pageInfo: PageInfoType
 }
 
 const store = configureStore({
@@ -13,6 +15,7 @@ const store = configureStore({
     counter: counterReducer,
     user: userReducer,
     components: componentsReducer,
+    pageInfo: pageInfoReducer,
   },
 })
 export default store
