@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import styles from './ManageLayout.module.scss'
 import { PlusOutlined, BarsOutlined, StarOutlined, DeleteOutlined } from '@ant-design/icons'

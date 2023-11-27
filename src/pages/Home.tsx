@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Typography } from 'antd'
 import styles from './Home.module.scss'

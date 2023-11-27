@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Result, Button } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { MANAGE_INDEX_PATHNAME } from '../router'

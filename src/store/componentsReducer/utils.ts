@@ -9,7 +9,6 @@ export function getNextSelectedId(fe_id: string, componentList: ComponentInfoTyp
   const length = componentList.length
   let newSelectedId = ''
   const index = componentList.filter(c => !c.isHidden).findIndex(c => c.fe_id === fe_id)
-  console.log(index)
   if (index === -1) return ''
   else {
     if (length <= 1) return ''

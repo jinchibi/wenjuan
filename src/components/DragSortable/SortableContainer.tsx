@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { FC } from 'react'
 import { DndContext, closestCenter, MouseSensor, useSensor, useSensors } from '@dnd-kit/core'
-import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 
 type PropsType = {
   children: JSX.Element | JSX.Element[]

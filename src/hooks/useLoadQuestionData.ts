@@ -23,7 +23,7 @@ function useLoadQuestionData() {
   const dispatch = useAppDispatch()
   useEffect(() => {
     if (!data) return
-    const { componentList = [], title, desc, js, css } = data
+    const { componentList = [], title, desc, js, css, isPublished } = data
     // 默认选中第一个组件
     let selectedId = ''
     if (componentList.length > 0) {
@@ -37,7 +37,7 @@ function useLoadQuestionData() {
       })
     )
     // 获取pageSetting
-    dispatch(resetPageInfoAction({ title, desc, js, css }))
+    dispatch(resetPageInfoAction({ title, desc, js, css, isPublished }))
   }, [data, dispatch])
   // 根据id变化来加载数据
   useEffect(() => {

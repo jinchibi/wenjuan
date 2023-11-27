@@ -15,7 +15,7 @@ function isActiveElemValid() {
   if (activeElem === document.body) return true
   // 适配dnd kit
   if (activeElem?.matches('div[role="button"]')) return true
-  console.log(activeElem)
+  // console.log(activeElem)
   return false
 }
 

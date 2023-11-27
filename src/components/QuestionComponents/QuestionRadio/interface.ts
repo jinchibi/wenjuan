@@ -23,3 +23,8 @@ export const QuestionRadioDefaultProps: QuestionRadioPropsType = {
   ],
   value: 'item1',
 }
+
+// 统计图表的类型
+export type QuestionRadioStatPropsType = {
+  stat: Array<{ name: string; count: number }>
+}

@@ -21,3 +21,8 @@ export const QuestionCheckboxDefaultProps: QuestionCheckboxPropsType = {
     { value: 'item3', text: '选项三', checked: false },
   ],
 }
+
+// 统计图表的类型
+export type QuestionCheckboxStatPropsType = {
+  stat: Array<{ name: string; count: number }>
+}

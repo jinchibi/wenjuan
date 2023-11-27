@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { FC, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Typography, Space, Form, Input, Button, Checkbox, message } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons'

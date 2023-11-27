@@ -54,7 +54,7 @@ const Layers: FC = () => {
   const componentListWithId = componentList.map(c => ({ ...c, id: c.fe_id }))
   // 拖拽排序结束触发
   function handleDragEnd(oldIndex: number, newIndex: number) {
-    console.log(oldIndex, newIndex)
+    // console.log(oldIndex, newIndex)
     dispatch(moveComponentAction({ oldIndex, newIndex }))
   }
   return (
